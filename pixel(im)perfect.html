@@ -280,6 +280,25 @@
 
         .overview-item { width: 100%; aspect-ratio: 1; border: 2px solid transparent; cursor: pointer; box-sizing: border-box; transition: border-color 0.2s; }
         .overview-item:hover { border-color: #fff; }
+
+        /* Credits Style */
+        .credit {
+            margin-top: auto;
+            font-size: 10px;
+            color: #888;
+            font-family: 'Space Grotesk', sans-serif;
+            padding-top: 20px;
+        }
+        .credit a {
+            color: var(--main-text);
+            text-decoration: none;
+            border-bottom: 1px dashed #888;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .credit a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -312,6 +331,10 @@
                 </div>
                 
                 <button type="button" class="btn dashed" id="upload-pattern-btn">upload pixel</button>
+            </div>
+            
+            <div class="credit">
+                created by <a href="https://annaellequionquion.com" target="_blank">annaëlle quionquion</a>
             </div>
         </div>
         
@@ -1149,6 +1172,7 @@
                 const workerUrl = await getGifWorkerUrl();
                 const CHROMA_KEY = 0x00FF00; 
 
+                // Maxed out quality to 1 (highest possible in gif.js) for best pixel fidelity
                 const gif = new GIF({ 
                     workers: 2, 
                     quality: 1, 
