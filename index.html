@@ -502,6 +502,9 @@
                         <option value="h">HORIZONTAL</option>
                         <option value="v">VERTICAL</option>
                         <option value="hv">H + V</option>
+                        <option value="d1">DIAGONAL 1</option>
+                        <option value="d2">DIAGONAL 2</option>
+                        <option value="all">ALL (8-WAY)</option>
                     </select>
                 </div>
                 <div class="row-actions"></div>
@@ -963,7 +966,7 @@
             if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'z') { e.preventDefault(); performRedo(); }
             else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) { e.preventDefault(); performUndo(); }
             if (e.key.toLowerCase() === 's' && !isInput) {
-                const modes = ['none','h','v','hv'];
+                const modes = ['none','h','v','hv','d1','d2','all'];
                 symmetryMode = modes[(modes.indexOf(symmetryMode)+1) % modes.length];
                 document.getElementById('symmetry-mode').value = symmetryMode;
             }
@@ -1642,9 +1645,15 @@
         function getSymmetryIndices(index, mode) {
             let cols = gridSize, rows = gridSize; let c = index % cols, r = Math.floor(index / cols); let indices = new Set([index]);
             let sym = mode || symmetryMode;
-            if (sym === 'h' || sym === 'hv') indices.add(r * cols + (cols - 1 - c));
-            if (sym === 'v' || sym === 'hv') indices.add((rows - 1 - r) * cols + c);
-            if (sym === 'hv') indices.add((rows - 1 - r) * cols + (cols - 1 - c));
+            if (sym === 'h' || sym === 'hv' || sym === 'all') indices.add(r * cols + (cols - 1 - c));
+            if (sym === 'v' || sym === 'hv' || sym === 'all') indices.add((rows - 1 - r) * cols + c);
+            if (sym === 'hv' || sym === 'all') indices.add((rows - 1 - r) * cols + (cols - 1 - c));
+            if (sym === 'd1' || sym === 'all') indices.add(c * cols + r);
+            if (sym === 'd2' || sym === 'all') indices.add((cols - 1 - c) * cols + (rows - 1 - r));
+            if (sym === 'all') {
+                indices.add(c * cols + (rows - 1 - r));
+                indices.add((cols - 1 - c) * cols + r);
+            }
             return Array.from(indices);
         }
         function rebuildDOMGrid(newSize) {
