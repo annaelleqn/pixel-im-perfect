@@ -1383,37 +1383,39 @@
             }
         }
 
-        function bindPopover(ctx) {
+       function bindPopover(ctx) {
             const sfx = ctx === 'pixel' ? 'pix' : 'bg';
             const pop = document.getElementById('popover-' + ctx);
-            const data = getFillData(ctx);
 
             pop.querySelectorAll('.pop-tab').forEach(t => {
                 t.addEventListener('click', e => {
                     e.preventDefault();
-                    data.mode = t.dataset.mode;
+                    getFillData(ctx).mode = t.dataset.mode;
                     renderPopover(ctx); requestUpdateDisplay(); saveState();
                 });
             });
 
             pop.querySelector('.grad-type-' + sfx).addEventListener('change', e => {
-                data.type = e.target.value;
+                getFillData(ctx).type = e.target.value;
                 renderPopover(ctx); requestUpdateDisplay(); saveState();
             });
 
             pop.querySelector('[data-action="reverse-' + sfx + '"]').addEventListener('click', e => {
                 e.preventDefault();
+                const data = getFillData(ctx);
                 data.stops = data.stops.map(s => ({pos: 100 - s.pos, color: s.color}));
                 renderPopover(ctx); requestUpdateDisplay(); saveState();
             });
 
             pop.querySelector('[data-action="rotate-' + sfx + '"]').addEventListener('click', e => {
                 e.preventDefault();
+                const data = getFillData(ctx);
                 data.angle = (data.angle + 90) % 360;
                 renderPopover(ctx); requestUpdateDisplay(); saveState();
             });
 
             pop.querySelector('.grad-bar-' + sfx).addEventListener('click', e => {
+                const data = getFillData(ctx);
                 const rect = e.currentTarget.getBoundingClientRect();
                 const pos = Math.round(((e.clientX - rect.left) / rect.width) * 100);
                 const sorted = [...data.stops].sort((a,b) => a.pos - b.pos);
@@ -1433,15 +1435,15 @@
 
             pop.querySelector('.add-stop-' + sfx).addEventListener('click', e => {
                 e.preventDefault();
-                data.stops.push({pos: 50, color: '#888888'});
+                getFillData(ctx).stops.push({pos: 50, color: '#888888'});
                 renderPopover(ctx); requestUpdateDisplay(); saveState();
             });
 
             const angleSlider = pop.querySelector('.grad-angle-slider-' + sfx);
             const angleNum = pop.querySelector('.grad-angle-num-' + sfx);
-            angleSlider.addEventListener('input', e => { data.angle = parseInt(e.target.value); angleNum.value = data.angle; requestUpdateDisplay(); });
+            angleSlider.addEventListener('input', e => { getFillData(ctx).angle = parseInt(e.target.value); angleNum.value = getFillData(ctx).angle; requestUpdateDisplay(); });
             angleSlider.addEventListener('change', () => saveState());
-            angleNum.addEventListener('input', e => { data.angle = parseInt(e.target.value) || 0; angleSlider.value = data.angle; requestUpdateDisplay(); });
+            angleNum.addEventListener('input', e => { getFillData(ctx).angle = parseInt(e.target.value) || 0; angleSlider.value = getFillData(ctx).angle; requestUpdateDisplay(); });
             angleNum.addEventListener('change', () => saveState());
         }
 
