@@ -1802,9 +1802,9 @@
                         let transformAttr = rotationDeg !== 0 ? `transform="rotate(${rotationDeg}, ${warped.x}, ${warped.y})"` : '';
                         if (currentPatternBase64 === "SVG_MODE" && customSvgMarkup) {
                             let presetHex = document.getElementById('preset-color').value;
-                            activeContent += `<g transform="${transformAttr}"><svg xmlns="http://www.w3.org/2000/svg" fill="${presetHex}" x="${x}" y="${y}" width="${finalW}" height="${finalH}" viewBox="${customSvgMarkup.viewBox}" overflow="visible">${customSvgMarkup.content}</svg></g>`;
+                            activeContent += `<g ${transformAttr}><svg xmlns="http://www.w3.org/2000/svg" fill="${presetHex}" x="${x}" y="${y}" width="${finalW}" height="${finalH}" viewBox="${customSvgMarkup.viewBox}" overflow="visible">${customSvgMarkup.content}</svg></g>`;
                         } else {
-                            activeContent += `<image href="${currentPatternBase64}" x="${x}" y="${y}" width="${finalW}" height="${finalH}" preserveAspectRatio="none" transform="${transformAttr}" />`;
+                            activeContent += `<image href="${currentPatternBase64}" x="${x}" y="${y}" width="${finalW}" height="${finalH}" preserveAspectRatio="none" ${transformAttr} />`;
                         }
                     }
                 } else {
